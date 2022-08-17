@@ -61,7 +61,7 @@ const CREATE_TABLE_SQL = `
     );
 `;
 
-app.post('/api/table', async (req, res, next) => {
+app.post('/api/table', (req, res, next) => {
     
     connection.promise().query(CREATE_TABLE_SQL)
     .then(() => {
@@ -79,7 +79,7 @@ const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS messages;
 `;
 
-app.delete('/api/table', async (req, res, next) => {
+app.delete('/api/table', (req, res, next) => {
     
     connection.promise().query(DROP_TABLE_SQL)
     .then(() => {
@@ -103,9 +103,10 @@ app.get('/api/message', async (req, res, next) => {
 
         res.json(allMessage[0]);
     }
-    catch(err)
+    catch(error)
     {
-        console.error(err.message);
+        console.error(error);
+        res.send(error);
     }
 });
 
@@ -119,8 +120,54 @@ app.post('/api/message', async (req, res, next) => {
 
         res.json(newInsert);
     }
-    catch(err)
+    catch(error)
     {
-        console.error(err.message);
+        console.error(error);
+        res.send(error);
     }
+});
+
+app.get('/api/message/:id', (req, res, next) => 
+{
+    console.log(req.params);
+    let id = req.params.id;
+
+    const SQLSTATEMENT = "SELECT * FROM messages WHERE id = ?";
+    const VALUES = [id];
+
+    connection.promise().query(SQLSTATEMENT, VALUES)
+    .then(([rows,fields]) => {
+        console.log(rows);
+        res.json(rows);
+    })
+    .catch((error) => {
+        res.send(error);
+    });
+});
+
+app.put('/api/message/:id', (req, res, next) => 
+{
+    console.log(req.params);
+    let id = req.params.id;
+
+    let message = req.body.message;
+    console.log("message", message);
+
+    const SQLSTATEMENT = `
+        UPDATE messages 
+        SET 
+            message = ?
+        WHERE
+            id = ?
+    `;
+    const VALUES = [message, id];
+
+    connection.promise().query(SQLSTATEMENT, VALUES)
+    .then(([rows,fields]) => {
+        console.log(rows);
+        res.json(rows);
+    })
+    .catch((error) => {
+        res.send(error);
+    });
 });
