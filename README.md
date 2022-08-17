@@ -32,3 +32,10 @@ npm start
 
 ### Select Rows
 * GET http://localhost:3000/api/message
+
+### Select Row by ID
+* GET http://localhost:3000/api/message/:id
+
+### Update Row by ID
+* PUT http://localhost:3000/api/message/:id
+* JSON { "message" : "What you want to update" }
