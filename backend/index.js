@@ -4,7 +4,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const connection = require('./db'); //Import from db.js
+//const connection = require('./db'); //Import from db.js
 
 //////////////////////////////////////////////////////
 // INIT
@@ -49,7 +49,7 @@ app.post('/api', async (req, res, next) => {
 
     res.json(req.body);
 });
-
+/* 
 //////////////////////////////////////////////////////
 // SETUP DB
 //////////////////////////////////////////////////////
@@ -170,4 +170,4 @@ app.put('/api/message/:id', (req, res, next) =>
     .catch((error) => {
         res.send(error);
     });
-});
+}); */
